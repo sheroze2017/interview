@@ -12,17 +12,20 @@ class GroupsDao extends DatabaseAccessor<Database> with _$GroupsDaoMixin {
   GroupsDao(super.db);
 
   Future insert(String name) {
-    return into(groups).insert(GroupsCompanion.insert(id: const Uuid().v1(), name: name));
+    return into(groups)
+        .insert(GroupsCompanion.insert(id: const Uuid().v1(), name: name));
   }
 
   Future adjustBalance(int balance, String groupId) async {
     final companion = GroupsCompanion(balance: Value(balance));
-    return (update(groups)..where((tbl) => tbl.id.equals(groupId))).write(companion);
+    return (update(groups)..where((tbl) => tbl.id.equals(groupId)))
+        .write(companion);
   }
 
   Stream<List<Group>> watch() => select(groups).watch();
 
   Stream<Group?> watchGroup(String groupId) {
-    return (select(groups)..where((tbl) => tbl.id.equals(groupId))).watchSingleOrNull();
+    return (select(groups)..where((tbl) => tbl.id.equals(groupId)))
+        .watchSingleOrNull();
   }
 }
